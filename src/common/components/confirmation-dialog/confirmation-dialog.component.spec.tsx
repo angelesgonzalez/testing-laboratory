@@ -1,6 +1,16 @@
 import React from 'react';
-import { render } from '@testing-library/react'
+import { render, fireEvent, getByText } from '@testing-library/react'
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
+
+/*
+Se renderiza el text?
+no se muestra nada cuando esta isOpen = false
+al hacer click en cancel se llama onClose
+al hacer click en accept se llama onAccept y onCLose 
+
+
+
+*/
 
 
 describe('common/components/ConfirmationDialogComponent', () => {
@@ -29,12 +39,59 @@ describe('common/components/ConfirmationDialogComponent', () => {
         expect(getByText('Accept')).toBeInTheDocument();
 
 
-
-
-
     })
 
+    it('Should not display any content when isOpen = false', () => {
+        //Arrange
 
+        const props = {
+            isOpen: false,
+            onAccept: vi.fn(),
+            onClose: vi.fn(),
+            title: "Test title",
+            labels: { closeButton: 'Cancel', acceptButton: 'Accept' },
+            children: <p> Dialog Content</p>,
+        };
+
+        //Act
+
+        const { queryByText } = render(<ConfirmationDialogComponent {...props} />);
+
+        //Assert
+
+        expect(queryByText('Dialog Content')).not.toBeInTheDocument();
+
+    });
+
+
+    it('Should call onClose when Cancel is clicked', () => {
+        //Arrange
+
+        const props = {
+            isOpen: true,
+            onAccept: vi.fn(),
+            onClose: vi.fn(),
+            title: "Test title",
+            labels: { closeButton: 'Cancel', acceptButton: 'Accept' },
+            children: <p> Dialog Content</p>,
+        };
+
+        //Act
+        //Encuentro el elemento 
+        const { getByText } = render(<ConfirmationDialogComponent {...props} />);
+        const cancelButton = getByText('Cancel');
+        //asigno el evento
+        fireEvent.click(cancelButton);
+
+
+
+
+
+        //Assert
+
+        expect(props.onClose).toHaveBeenCalledTimes(1);
+        expect(props.onAccept).not.toHaveBeenCalled();
+    });
 
 
 
