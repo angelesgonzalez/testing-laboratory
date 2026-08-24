@@ -2,16 +2,6 @@ import React from 'react';
 import { render, fireEvent, getByText } from '@testing-library/react'
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 
-/*
-Se renderiza el text?
-no se muestra nada cuando esta isOpen = false
-al hacer click en cancel se llama onClose
-al hacer click en accept se llama onAccept y onCLose 
-
-
-
-*/
-
 
 describe('common/components/ConfirmationDialogComponent', () => {
 
