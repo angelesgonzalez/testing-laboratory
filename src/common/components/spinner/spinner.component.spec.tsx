@@ -21,5 +21,22 @@ describe('common/components/SpinnerComponent', () => {
         expect(queryByRole('presentation')).not.toBeInTheDocument();
     });
 
+    /*--------- */
+
+
+    it('Should be visible when there is a promise in progress', () => {
+
+        const mockedPromise = { promiseInProgress: true };
+
+        // Arrange
+        vi.mocked(usePromiseTracker).mockReturnValue(mockedPromise);
+
+        // Act
+        const { queryByRole } = render(<SpinnerComponent />);
+
+        // Assert
+        expect(queryByRole('presentation')).toBeInTheDocument();
+    });
+
 });
 
