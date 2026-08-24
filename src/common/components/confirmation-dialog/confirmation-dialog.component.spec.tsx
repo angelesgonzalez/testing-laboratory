@@ -63,6 +63,8 @@ describe('common/components/ConfirmationDialogComponent', () => {
 
     });
 
+    /*-------------- */
+
 
     it('Should call onClose when Cancel is clicked', () => {
         //Arrange
@@ -77,21 +79,51 @@ describe('common/components/ConfirmationDialogComponent', () => {
         };
 
         //Act
-        //Encuentro el elemento 
+
         const { getByText } = render(<ConfirmationDialogComponent {...props} />);
         const cancelButton = getByText('Cancel');
-        //asigno el evento
+
+
         fireEvent.click(cancelButton);
-
-
-
-
 
         //Assert
 
         expect(props.onClose).toHaveBeenCalledTimes(1);
         expect(props.onAccept).not.toHaveBeenCalled();
     });
+
+
+    /*-------------- */
+
+    it('Should call onAccept and onClose when accept is clicked', () => {
+        //Arrange
+
+        const props = {
+            isOpen: true,
+            onAccept: vi.fn(),
+            onClose: vi.fn(),
+            title: "Test title",
+            labels: { closeButton: 'Cancel', acceptButton: 'Accept' },
+            children: <p> Dialog Content</p>,
+        };
+
+        //Act
+
+        const { getByText } = render(<ConfirmationDialogComponent {...props} />);
+        const acceptButton = getByText('Accept');
+
+
+        fireEvent.click(acceptButton);
+
+        //Assert
+
+        expect(props.onAccept).toHaveBeenCalledTimes(1);
+        expect(props.onClose).toHaveBeenCalledAfter(props.onAccept)
+    });
+
+
+
+
 
 
 
