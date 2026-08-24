@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { useConfirmationDialog } from './confirmation-dialog.hook';
 
 /*
@@ -20,6 +20,45 @@ describe('common/components/useConfirmationDialog', () => {
         // Assert
         expect(result.current.isOpen).toBe(false);
         expect(result.current.itemToDelete).toEqual({ id: '', name: '' });
+    });
+
+    /*----------- */
+
+    it('Should set isOpen to true and store "item" when onOpenDialog is called', () => {
+
+        // Arrange
+        const { result } = renderHook(() => useConfirmationDialog());
+        const item = { id: '1', name: 'Test item' };
+
+        // Act
+        act(() => {
+            result.current.onOpenDialog(item);
+        });
+
+        // Assert
+        expect(result.current.isOpen).toBe(true);
+        expect(result.current.itemToDelete).toEqual(item);
+    });
+
+    /*----------- */
+
+    it('Should set isOpen to false', () => {
+
+        // Arrange
+        const { result } = renderHook(() => useConfirmationDialog());
+        const item = { id: '1', name: 'Test item' };
+
+        // Act
+        act(() => {
+            result.current.onOpenDialog(item);
+        });
+
+        act(() => {
+            result.current.onClose();
+        });
+
+        // Assert
+        expect(result.current.isOpen).toBe(false);
     });
 
 });
