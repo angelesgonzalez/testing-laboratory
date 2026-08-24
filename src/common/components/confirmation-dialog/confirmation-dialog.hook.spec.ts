@@ -61,4 +61,28 @@ describe('common/components/useConfirmationDialog', () => {
         expect(result.current.isOpen).toBe(false);
     });
 
+
+    /*----------- */
+
+    it('Should called onAccept and reset itemToDelete', () => {
+
+        // Arrange
+        const { result } = renderHook(() => useConfirmationDialog());
+        const item = { id: '1', name: 'Test item' };
+
+        // Act
+        act(() => {
+            result.current.onOpenDialog(item);
+        });
+
+        act(() => {
+            result.current.onAccept();
+        });
+
+        // Assert
+        expect(result.current.itemToDelete).toEqual({ id: '', name: '' });
+    });
+
+
+
 });
